@@ -1,0 +1,51 @@
+body{
+    background:#f4f7fb;
+    font-family: Arial, sans-serif;
+}
+
+.card{
+    border:none;
+    border-radius:10px;
+}
+
+.table{
+    background:white;
+}
+
+.table th{
+    text-align:center;
+}
+
+.table td{
+    vertical-align:middle;
+}
+
+.form-control{
+    border-radius:8px;
+}
+
+.btn{
+    border-radius:8px;
+}
+
+.dashboard-card{
+    padding:20px;
+    border-radius:10px;
+    color:white;
+}
+
+.bg-blue{
+    background:#0d6efd;
+}
+
+.bg-green{
+    background:#198754;
+}
+
+.bg-red{
+    background:#dc3545;
+}
+
+.bg-orange{
+    background:#fd7e14;
+}
