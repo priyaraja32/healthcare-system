@@ -9,7 +9,7 @@ $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $limit = 10;
 $offset = ($page - 1) * $limit;
 
-// Query for patients - REMOVED gender column
+
 $sql = "SELECT 
             p.patient_id,
             p.name,
