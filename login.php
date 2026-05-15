@@ -1,5 +1,5 @@
 <?php
-// login.php - Fixed version
+// login.php 
 require_once 'config/db.php';
 
 // If already logged in, redirect to dashboard
