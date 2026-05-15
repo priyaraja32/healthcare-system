@@ -1,6 +1,9 @@
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
+<?php
+// includes/footer.php
+?>
+    </div>
+    <footer class="footer">
+        <p>&copy; 2024 Healthcare Management System. All rights reserved.</p>
+    </footer>
 </body>
 </html>

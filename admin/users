@@ -1,0 +1,78 @@
+<?php
+// admin/users.php
+require_once '../config/db.php';
+requireRole('admin');
+include '../includes/header.php';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_user'])) {
+    $username = trim($_POST['username']);
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $email = trim($_POST['email']);
+    $full_name = trim($_POST['full_name']);
+    $role = $_POST['role'];
+    
+    try {
+        $stmt = $pdo->prepare("INSERT INTO users (username, password, email, full_name, role) VALUES (:username, :password, :email, :full_name, :role)");
+        $stmt->execute([
+            ':username' => $username,
+            ':password' => $password,
+            ':email' => $email,
+            ':full_name' => $full_name,
+            ':role' => $role
+        ]);
+        $success = "User added successfully!";
+    } catch(PDOException $e) {
+        $error = "Username already exists!";
+    }
+}
+
+$users = $pdo->query("SELECT * FROM users ORDER BY created_at DESC")->fetchAll();
+?>
+
+<div class="card">
+    <div class="card-header"><h2 class="card-title">Manage Users</h2></div>
+    
+    <?php if(isset($success)): ?><div class="alert alert-success"><?= $success ?></div><?php endif; ?>
+    <?php if(isset($error)): ?><div class="alert alert-danger"><?= $error ?></div><?php endif; ?>
+    
+    <form method="POST" action="" style="margin-bottom: 2rem;">
+        <h3>Add New User</h3>
+        <div class="form-row">
+            <div class="form-group"><label class="form-label">Username</label><input type="text" name="username" class="form-control" required></div>
+            <div class="form-group"><label class="form-label">Password</label><input type="password" name="password" class="form-control" required></div>
+            <div class="form-group"><label class="form-label">Email</label><input type="email" name="email" class="form-control" required></div>
+        </div>
+        <div class="form-row">
+            <div class="form-group"><label class="form-label">Full Name</label><input type="text" name="full_name" class="form-control" required></div>
+            <div class="form-group"><label class="form-label">Role</label>
+                <select name="role" class="form-control">
+                    <option value="staff">Staff</option>
+                    <option value="doctor">Doctor</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+        </div>
+        <button type="submit" name="add_user" class="btn btn-primary">Add User</button>
+    </form>
+    
+    <h3>Existing Users</h3>
+    <div class="table-container">
+        <table class="table">
+            <thead><tr><th>Username</th><th>Full Name</th><th>Email</th><th>Role</th><th>Created At</th><th>Last Login</th></tr></thead>
+            <tbody>
+                <?php foreach($users as $user): ?>
+                <tr>
+                    <td><?= htmlspecialchars($user['username']) ?></td>
+                    <td><?= htmlspecialchars($user['full_name']) ?></td>
+                    <td><?= htmlspecialchars($user['email']) ?></td>
+                    <td><span class="badge badge-info"><?= $user['role'] ?></span></td>
+                    <td><?= date('M d, Y', strtotime($user['created_at'])) ?></td>
+                    <td><?= $user['last_login'] ? date('M d, Y H:i', strtotime($user['last_login'])) : 'Never' ?></td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<?php include '../includes/footer.php'; ?>
